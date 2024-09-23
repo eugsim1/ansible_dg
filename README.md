@@ -25,7 +25,7 @@ To create a dataguard association in the same region run the below script:
 source exacs.env
 
 
-export database_id="the ocid fo the source database from your exa""
+export database_id="the ocid of the source database from your exa"
 export compartment_id="$EXA_VM_COMPARTMENT_ID" ## the ocid of compartment of your source cluster Exa export region="the region of the source database"
 
 export database_admin_password="the_password_of_the_source_database"
