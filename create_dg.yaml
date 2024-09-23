@@ -1,0 +1,42 @@
+### https://oci-ansible-collection.readthedocs.io/en/latest/collections/oracle/oci/oci_database_data_guard_association_module.html
+
+- name: get dg association facts
+  collections:
+  - oracle.oci
+  connection: local
+  hosts: localhost
+  vars_files:
+  - default_database.yaml
+  tasks:
+
+  - name: dump variables DB creation
+    debug:
+      msg: '{{ region }} '
+    tags:
+    - Dump-vars
+
+  - name: Create data_guard_association with creation_type = ExistingVmCluster
+    oci_database_data_guard_association:
+      creation_type: ExistingVmCluster
+      database_admin_password: "{{ database_admin_password }}"
+      protection_mode: MAXIMUM_PERFORMANCE
+      transport_type: ASYNC
+      database_id: "{{ database_id }}"
+      license_model: BRING_YOUR_OWN_LICENSE
+      peer_vm_cluster_id: "{{ peer_vm_cluster_id }}"
+      peer_db_unique_name: "{{peer_db_unique_name}}"
+      peer_sid_prefix: "{{peer_sid_prefix}}"
+      is_active_data_guard_enabled: false
+      display_name: "{{display_name}}"
+      region: "{{ region }}"
+      wait: no
+    register: result
+    tags:
+    - create-data_guard_association
+
+  - name: Dump result from data_guard_association
+    debug:
+      msg: '{{ result }}'
+    tags:
+    - dbg-data_guard_association
+

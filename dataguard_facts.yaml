@@ -1,0 +1,40 @@
+## https://oci-ansible-collection.readthedocs.io/en/latest/collections/oracle/oci/oci_database_data_guard_association_facts_module.html
+
+- name: get dg association facts
+  collections:
+  - oracle.oci
+  connection: local
+  hosts: localhost
+  vars_files:
+  - default_database.yaml
+  tasks:
+
+  - name: dump variables DB creation
+    debug:
+      msg: '{{ region }} '
+    tags:
+    - Dump-vars
+
+  - name: Get a specific data_guard_association
+    oci_database_data_guard_association_facts:
+      data_guard_association_id: "{{ data_guard_association_id }}"
+      database_id: "{{database_id}}"
+      region: "{{ region }}"
+    register: result
+    tags:
+    - get-data_guard_association
+
+  - name: List data_guard_associations
+    oci_database_data_guard_association_facts:
+      database_id: "{{database_id}}"
+      region: "{{ region }}"
+    register: result
+    tags:
+    - list-data_guard_association
+
+  - name: Dump result from data_guard_association
+    debug:
+      msg: '{{ result }}'
+    tags:
+    - dbg-data_guard_association
+

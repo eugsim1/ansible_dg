@@ -1,0 +1,31 @@
+- name: terminate dataguard
+  collections:
+  - oracle.oci
+  connection: local
+  hosts: localhost
+
+  tasks:
+  - name: Prevent run without tags
+    fail: msg="You must run this playbook with tags!"
+
+  - name: dump variables dataguard
+    debug:
+      msg: '{{ region }}  | {{ perform_final_backup | default(omit)  }}  '
+    tags:
+    - Dump-vars
+
+  - name: Delete dataguard
+    oracle.oci.oci_database_database:
+      # required
+      database_id: "{{ database_id  }}"
+      state: absent
+      perform_final_backup: "{{  perform_final_backup |  default(omit)  }}"
+    register: result
+    tags:
+    - Delete_database
+
+  - name: Dump result from dataguarde
+    debug:
+      msg: '{{ result }}'
+    tags:
+    - dbg-DB
